@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>sxwss.gg</title>
+<link rel="icon" href="data:,">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Segoe UI",sans-serif;
+}
+
+body{
+    overflow:hidden;
+    background:black;
+}
+
+/* 🎬 VIDEO BACKGROUND */
+video{
+    position:fixed;
+    top:50%;
+    left:50%;
+    min-width:100%;
+    min-height:100%;
+    transform:translate(-50%,-50%) scale(1);
+    object-fit:cover;
+    filter:grayscale(100%) brightness(0.35) contrast(1.1);
+    z-index:-3;
+}
+
+/* DARK OVERLAY */
+.dark{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.45);
+    z-index:-2;
+}
+
+/* 🕒 CLEAN MINI CLOCK (DESIGNOS) */
+.clock{
+    position:fixed;
+    top:18px;
+    right:28px;
+    font-size:14px;
+    letter-spacing:3px;
+    color:rgba(255,255,255,0.55);
+    background:rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.12);
+    padding:6px 12px;
+    backdrop-filter:blur(10px);
+    border-radius:6px;
+    user-select:none;
+}
+
+/* CENTER BUTTON */
+.center{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+.enter{
+    padding:24px 90px;
+    font-size:36px;
+    letter-spacing:10px;
+    color:white;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.35);
+    backdrop-filter:blur(14px);
+    cursor:pointer;
+    transition:0.35s ease;
+}
+
+.enter:hover{
+    background:white;
+    color:black;
+    transform:scale(1.08);
+    letter-spacing:14px;
+}
+
+/* MENU OVERLAY */
+.menuOverlay{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.7);
+    backdrop-filter:blur(40px) saturate(120%);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.5s ease;
+}
+
+.menuOverlay.active{
+    opacity:1;
+    pointer-events:all;
+}
+
+/* CLEAN MENU */
+.menu{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%) scale(0.9);
+    text-align:center;
+    opacity:0;
+    transition:0.4s ease;
+}
+
+.menuOverlay.active .menu{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+}
+
+.menu a{
+    display:block;
+    font-size:38px;
+    margin:26px 0;
+    color:white;
+    text-decoration:none;
+    letter-spacing:8px;
+    transition:0.3s ease;
+}
+
+.menu a:hover{
+    transform:scale(1.12);
+    letter-spacing:14px;
+    opacity:0.75;
+}
+
+/* FOOTER */
+.footer{
+    position:fixed;
+    bottom:18px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:13px;
+    letter-spacing:4px;
+    color:rgba(255,255,255,0.35);
+    user-select:none;
+    pointer-events:none;
+}
+</style>
+</head>
+<body>
+
+<!-- 🎥 BACKGROUND VIDEO -->
+<video autoplay muted loop playsinline>
+    <source src="background.mp4" type="video/mp4">
+</video>
+
+<div class="dark"></div>
+
+<!-- 🕒 MINI CLOCK -->
+<div class="clock" id="clock">00:00</div>
+
+<div class="center">
+    <button class="enter" onclick="openMenu()">SXWSS</button>
+</div>
+
+<div class="menuOverlay" id="menuOverlay">
+    <div class="menu">
+        <a href="https://www.tiktok.com/@sxwss_" target="_blank">TIKTOK</a>
+        <a href="https://www.instagram.com/brenooo1_/" target="_blank">INSTAGRAM</a>
+        <a href="https://discord.com/users/1094196936233472066" target="_blank">DISCORD</a>
+    </div>
+</div>
+
+<div class="footer">
+    made with ♡ by sxwss
+</div>
+
+<audio id="music" preload="auto" loop>
+    <source src="background.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const music = document.getElementById("music");
+const overlay = document.getElementById("menuOverlay");
+const clock = document.getElementById("clock");
+
+/* 🕒 CLEAN CLOCK (HH:MM) */
+function updateClock(){
+    const now = new Date();
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    clock.textContent = hours + ":" + minutes;
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+/* AUTOPLAY MUSIC */
+window.addEventListener("load", () => {
+    music.volume = 1;
+    music.muted = false;
+    music.play().catch(() => {});
+});
+
+/* fallback interaction */
+function unlockAudio(){
+    music.play().then(()=>{
+        document.removeEventListener("mousemove", unlockAudio);
+        document.removeEventListener("keydown", unlockAudio);
+        document.removeEventListener("scroll", unlockAudio);
+    }).catch(()=>{});
+}
+
+document.addEventListener("mousemove", unlockAudio);
+document.addEventListener("keydown", unlockAudio);
+document.addEventListener("scroll", unlockAudio);
+
+/* MENU */
+function openMenu(){
+    overlay.classList.add("active");
+}
+
+/* TAB TITLE LOOP */
+const titles = ["sxwss.html","sxwss.bat","sxwss.exe"];
+let titleIndex = 0;
+let titleInterval;
+
+function startTitleLoop(){
+    titleInterval = setInterval(() => {
+        titleIndex = (titleIndex + 1) % titles.length;
+        document.title = titles[titleIndex];
+    }, 300);
+}
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        clearInterval(titleInterval);
+        document.title = "come back.";
+    } else {
+        startTitleLoop();
+    }
+});
+
+startTitleLoop();
+</script>
+
+</body>
+</html>
