@@ -20,15 +20,26 @@ body{
     background:black;
 }
 
-/* 🎬 VIDEO BACKGROUND */
+/* 🎬 DESKTOP VIDEO */
 video{
     position:fixed;
     top:50%;
     left:50%;
     min-width:100%;
     min-height:100%;
-    transform:translate(-50%,-50%) scale(1);
+    transform:translate(-50%,-50%);
     object-fit:cover;
+    filter:grayscale(100%) brightness(0.35) contrast(1.1);
+    z-index:-3;
+}
+
+/* 📱 MOBILE IMAGE */
+.mobile-bg{
+    display:none;
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:url("background.jpg") center center / cover no-repeat;
     filter:grayscale(100%) brightness(0.35) contrast(1.1);
     z-index:-3;
 }
@@ -38,11 +49,11 @@ video{
     position:fixed;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.45);
+    background:rgba(0,0,0,0.55);
     z-index:-2;
 }
 
-/* 🕒 CLEAN MINI CLOCK (DESIGNOS) */
+/* CLOCK */
 .clock{
     position:fixed;
     top:18px;
@@ -52,13 +63,13 @@ video{
     color:rgba(255,255,255,0.55);
     background:rgba(255,255,255,0.03);
     border:1px solid rgba(255,255,255,0.12);
-    padding:6px 12px;
+    padding:6px 14px;
     backdrop-filter:blur(10px);
-    border-radius:6px;
+    border-radius:8px;
     user-select:none;
 }
 
-/* CENTER BUTTON */
+/* CENTER */
 .center{
     position:absolute;
     top:50%;
@@ -66,32 +77,33 @@ video{
     transform:translate(-50%,-50%);
 }
 
+/* BUTTON */
 .enter{
     padding:24px 90px;
     font-size:36px;
     letter-spacing:10px;
     color:white;
-    background:rgba(255,255,255,0.05);
-    border:1px solid rgba(255,255,255,0.35);
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.25);
     backdrop-filter:blur(14px);
     cursor:pointer;
     transition:0.35s ease;
 }
 
 .enter:hover{
-    background:white;
-    color:black;
-    transform:scale(1.08);
-    letter-spacing:14px;
+    background:rgba(255,255,255,0.06);
+    border:1px solid rgba(255,255,255,0.5);
+    box-shadow:0 0 60px rgba(255,255,255,0.2);
+    transform:scale(1.06);
 }
 
-/* MENU OVERLAY */
+/* MENU */
 .menuOverlay{
     position:fixed;
     width:100%;
     height:100%;
-    background:rgba(0,0,0,0.7);
-    backdrop-filter:blur(40px) saturate(120%);
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(50px) saturate(130%);
     opacity:0;
     pointer-events:none;
     transition:opacity 0.5s ease;
@@ -102,7 +114,6 @@ video{
     pointer-events:all;
 }
 
-/* CLEAN MENU */
 .menu{
     position:absolute;
     top:50%;
@@ -110,7 +121,7 @@ video{
     transform:translate(-50%,-50%) scale(0.9);
     text-align:center;
     opacity:0;
-    transition:0.4s ease;
+    transition:0.5s ease;
 }
 
 .menuOverlay.active .menu{
@@ -120,21 +131,21 @@ video{
 
 .menu a{
     display:block;
-    font-size:38px;
-    margin:26px 0;
+    font-size:42px;
+    margin:30px 0;
     color:white;
     text-decoration:none;
-    letter-spacing:8px;
+    letter-spacing:10px;
     transition:0.3s ease;
+    opacity:0.85;
 }
 
 .menu a:hover{
     transform:scale(1.12);
-    letter-spacing:14px;
-    opacity:0.75;
+    letter-spacing:16px;
+    opacity:1;
 }
 
-/* FOOTER */
 .footer{
     position:fixed;
     bottom:18px;
@@ -146,18 +157,48 @@ video{
     user-select:none;
     pointer-events:none;
 }
+
+/* 📱 RESPONSIVE SWITCH */
+@media (max-width: 768px){
+
+    video{
+        display:none;
+    }
+
+    .mobile-bg{
+        display:block;
+    }
+
+    .enter{
+        padding:18px 50px;
+        font-size:26px;
+        letter-spacing:8px;
+    }
+
+    .menu a{
+        font-size:28px;
+        letter-spacing:6px;
+    }
+
+    .clock{
+        font-size:12px;
+        padding:4px 10px;
+    }
+}
 </style>
 </head>
 <body>
 
-<!-- 🎥 BACKGROUND VIDEO -->
-<video autoplay muted loop playsinline>
+<!-- DESKTOP VIDEO -->
+<video autoplay muted loop playsinline preload="none">
     <source src="background.mp4" type="video/mp4">
 </video>
 
+<!-- MOBILE IMAGE -->
+<div class="mobile-bg"></div>
+
 <div class="dark"></div>
 
-<!-- 🕒 MINI CLOCK -->
 <div class="clock" id="clock">00:00</div>
 
 <div class="center">
@@ -181,44 +222,48 @@ video{
 </audio>
 
 <script>
-const music = document.getElementById("music");
 const overlay = document.getElementById("menuOverlay");
 const clock = document.getElementById("clock");
+const music = document.getElementById("music");
 
-/* 🕒 CLEAN CLOCK (HH:MM) */
+let musicStarted = false;
+
+/* CLOCK */
 function updateClock(){
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    clock.textContent = hours + ":" + minutes;
+    clock.textContent =
+        now.getHours().toString().padStart(2,'0') + ":" +
+        now.getMinutes().toString().padStart(2,'0');
 }
 setInterval(updateClock, 1000);
 updateClock();
 
-/* AUTOPLAY MUSIC */
-window.addEventListener("load", () => {
-    music.volume = 1;
-    music.muted = false;
-    music.play().catch(() => {});
-});
-
-/* fallback interaction */
-function unlockAudio(){
-    music.play().then(()=>{
-        document.removeEventListener("mousemove", unlockAudio);
-        document.removeEventListener("keydown", unlockAudio);
-        document.removeEventListener("scroll", unlockAudio);
-    }).catch(()=>{});
+/* MUSIC */
+function startMusic(){
+    if(!musicStarted){
+        music.volume = 1;
+        music.play().then(()=>{
+            musicStarted = true;
+        }).catch(()=>{});
+    }
 }
 
-document.addEventListener("mousemove", unlockAudio);
-document.addEventListener("keydown", unlockAudio);
-document.addEventListener("scroll", unlockAudio);
+document.addEventListener("click", startMusic);
+document.addEventListener("touchstart", startMusic);
+
+window.addEventListener("load", startMusic);
 
 /* MENU */
 function openMenu(){
     overlay.classList.add("active");
+    startMusic();
 }
+
+document.addEventListener("keydown", (e) => {
+    if(e.key === "Escape"){
+        overlay.classList.remove("active");
+    }
+});
 
 /* TAB TITLE LOOP */
 const titles = ["sxwss.html","sxwss.bat","sxwss.exe"];
@@ -226,14 +271,14 @@ let titleIndex = 0;
 let titleInterval;
 
 function startTitleLoop(){
-    titleInterval = setInterval(() => {
+    titleInterval = setInterval(()=>{
         titleIndex = (titleIndex + 1) % titles.length;
         document.title = titles[titleIndex];
-    }, 300);
+    },300);
 }
 
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
+document.addEventListener("visibilitychange", ()=>{
+    if(document.hidden){
         clearInterval(titleInterval);
         document.title = "come back.";
     } else {
