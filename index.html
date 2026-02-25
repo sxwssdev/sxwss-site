@@ -3,52 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>sxwss.gg</title>
 <link rel="icon" href="data:,">
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:"Segoe UI",sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif;}
+body{overflow:hidden;background:black;}
 
-body{
-    overflow:hidden;
-    background:black;
-}
-
-/* 🎬 DESKTOP VIDEO */
+/* VIDEO */
 video{
     position:fixed;
-    top:50%;
-    left:50%;
-    min-width:100%;
-    min-height:100%;
+    top:50%;left:50%;
+    min-width:100%;min-height:100%;
     transform:translate(-50%,-50%);
     object-fit:cover;
     filter:grayscale(100%) brightness(0.35) contrast(1.1);
     z-index:-3;
 }
 
-/* 📱 MOBILE IMAGE */
+/* MOBILE IMAGE */
 .mobile-bg{
     display:none;
     position:fixed;
-    width:100%;
-    height:100%;
+    width:100%;height:100%;
     background:url("background.jpg") center center / cover no-repeat;
     filter:grayscale(100%) brightness(0.35) contrast(1.1);
     z-index:-3;
 }
 
-/* DARK OVERLAY */
 .dark{
     position:fixed;
-    width:100%;
-    height:100%;
+    width:100%;height:100%;
     background:rgba(0,0,0,0.55);
     z-index:-2;
 }
@@ -56,28 +41,46 @@ video{
 /* CLOCK */
 .clock{
     position:fixed;
-    top:18px;
-    right:28px;
-    font-size:14px;
+    top:18px;right:28px;
+    font-size:13px;
     letter-spacing:3px;
     color:rgba(255,255,255,0.55);
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,255,255,0.12);
-    padding:6px 14px;
-    backdrop-filter:blur(10px);
-    border-radius:8px;
-    user-select:none;
+}
+
+/* DISCORD */
+.discordStatus{
+    position:fixed;
+    bottom:48px;
+    left:50%;
+    transform:translateX(-50%);
+    font-size:12px;
+    letter-spacing:4px;
+    color:rgba(255,255,255,0.75);
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.dot{
+    width:8px;height:8px;
+    border-radius:50%;
+    background:gray;
+    box-shadow:0 0 8px gray;
+}
+
+@keyframes pulse{
+    0%{box-shadow:0 0 4px currentColor;}
+    50%{box-shadow:0 0 16px currentColor;}
+    100%{box-shadow:0 0 4px currentColor;}
 }
 
 /* CENTER */
 .center{
     position:absolute;
-    top:50%;
-    left:50%;
+    top:50%;left:50%;
     transform:translate(-50%,-50%);
 }
 
-/* BUTTON */
 .enter{
     padding:24px 90px;
     font-size:36px;
@@ -90,20 +93,14 @@ video{
     transition:0.35s ease;
 }
 
-.enter:hover{
-    background:rgba(255,255,255,0.06);
-    border:1px solid rgba(255,255,255,0.5);
-    box-shadow:0 0 60px rgba(255,255,255,0.2);
-    transform:scale(1.06);
-}
+.enter:hover{transform:scale(1.06);}
 
 /* MENU */
 .menuOverlay{
     position:fixed;
-    width:100%;
-    height:100%;
+    width:100%;height:100%;
     background:rgba(0,0,0,0.75);
-    backdrop-filter:blur(50px) saturate(130%);
+    backdrop-filter:blur(50px);
     opacity:0;
     pointer-events:none;
     transition:opacity 0.5s ease;
@@ -116,17 +113,9 @@ video{
 
 .menu{
     position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%) scale(0.9);
+    top:50%;left:50%;
+    transform:translate(-50%,-50%);
     text-align:center;
-    opacity:0;
-    transition:0.5s ease;
-}
-
-.menuOverlay.active .menu{
-    transform:translate(-50%,-50%) scale(1);
-    opacity:1;
 }
 
 .menu a{
@@ -137,66 +126,34 @@ video{
     text-decoration:none;
     letter-spacing:10px;
     transition:0.3s ease;
-    opacity:0.85;
 }
 
-.menu a:hover{
-    transform:scale(1.12);
-    letter-spacing:16px;
-    opacity:1;
-}
+.menu a:hover{transform:scale(1.12);}
 
+/* FOOTER */
 .footer{
     position:fixed;
-    bottom:18px;
+    bottom:16px;
     left:50%;
     transform:translateX(-50%);
     font-size:13px;
     letter-spacing:4px;
     color:rgba(255,255,255,0.35);
-    user-select:none;
-    pointer-events:none;
 }
 
-/* 📱 RESPONSIVE SWITCH */
-@media (max-width: 768px){
-
-    video{
-        display:none;
-    }
-
-    .mobile-bg{
-        display:block;
-    }
-
-    .enter{
-        padding:18px 50px;
-        font-size:26px;
-        letter-spacing:8px;
-    }
-
-    .menu a{
-        font-size:28px;
-        letter-spacing:6px;
-    }
-
-    .clock{
-        font-size:12px;
-        padding:4px 10px;
-    }
+@media (max-width:768px){
+    video{display:none;}
+    .mobile-bg{display:block;}
 }
 </style>
 </head>
 <body>
 
-<!-- DESKTOP VIDEO -->
 <video autoplay muted loop playsinline preload="none">
     <source src="background.mp4" type="video/mp4">
 </video>
 
-<!-- MOBILE IMAGE -->
 <div class="mobile-bg"></div>
-
 <div class="dark"></div>
 
 <div class="clock" id="clock">00:00</div>
@@ -213,80 +170,95 @@ video{
     </div>
 </div>
 
+<div class="discordStatus">
+    <span class="dot" id="statusDot"></span>
+    <span id="statusText">DISCORD - LOADING</span>
+</div>
+
 <div class="footer">
     made with ♡ by sxwss
 </div>
 
-<audio id="music" preload="auto" loop>
+<!-- BACKGROUND MUSIC -->
+<audio id="bgMusic" loop preload="auto">
     <source src="background.mp3" type="audio/mpeg">
 </audio>
 
 <script>
-const overlay = document.getElementById("menuOverlay");
-const clock = document.getElementById("clock");
-const music = document.getElementById("music");
-
-let musicStarted = false;
+const overlay=document.getElementById("menuOverlay");
+const clock=document.getElementById("clock");
+const music=document.getElementById("bgMusic");
 
 /* CLOCK */
 function updateClock(){
-    const now = new Date();
-    clock.textContent =
-        now.getHours().toString().padStart(2,'0') + ":" +
+    const now=new Date();
+    clock.textContent=
+        now.getHours().toString().padStart(2,'0')+":"+
         now.getMinutes().toString().padStart(2,'0');
 }
-setInterval(updateClock, 1000);
+setInterval(updateClock,1000);
 updateClock();
-
-/* MUSIC */
-function startMusic(){
-    if(!musicStarted){
-        music.volume = 1;
-        music.play().then(()=>{
-            musicStarted = true;
-        }).catch(()=>{});
-    }
-}
-
-document.addEventListener("click", startMusic);
-document.addEventListener("touchstart", startMusic);
-
-window.addEventListener("load", startMusic);
 
 /* MENU */
 function openMenu(){
     overlay.classList.add("active");
-    startMusic();
 }
-
-document.addEventListener("keydown", (e) => {
-    if(e.key === "Escape"){
+document.addEventListener("keydown",(e)=>{
+    if(e.key==="Escape"){
         overlay.classList.remove("active");
     }
 });
 
-/* TAB TITLE LOOP */
-const titles = ["sxwss.html","sxwss.bat","sxwss.exe"];
-let titleIndex = 0;
-let titleInterval;
-
-function startTitleLoop(){
-    titleInterval = setInterval(()=>{
-        titleIndex = (titleIndex + 1) % titles.length;
-        document.title = titles[titleIndex];
-    },300);
+/* 🔥 MUSIC SYSTEM */
+function tryAutoPlay(){
+    music.volume=1;
+    music.play().catch(()=>{});
 }
 
-document.addEventListener("visibilitychange", ()=>{
-    if(document.hidden){
-        clearInterval(titleInterval);
-        document.title = "come back.";
-    } else {
-        startTitleLoop();
-    }
-});
+window.addEventListener("load", tryAutoPlay);
 
-startTitleLoop();
+// HA BLOKKOLJA → BÁRHOL KATTINTASZ ELINDUL
+function forcePlay(){
+    music.play();
+    document.removeEventListener("click", forcePlay);
+    document.removeEventListener("touchstart", forcePlay);
+}
+
+document.addEventListener("click", forcePlay);
+document.addEventListener("touchstart", forcePlay);
+
+/* DISCORD */
+async function getDiscordStatus(){
+    const res=await fetch("https://api.lanyard.rest/v1/users/1094196936233472066");
+    const data=await res.json();
+
+    const status=data.data.discord_status;
+    const text=document.getElementById("statusText");
+    const dot=document.getElementById("statusDot");
+
+    dot.style.animation="none";
+
+    if(status==="online"){
+        text.textContent="DISCORD - ONLINE";
+        dot.style.background="#43b581";
+        dot.style.animation="pulse 2s infinite";
+    }
+    else if(status==="idle"){
+        text.textContent="DISCORD - IDLE";
+        dot.style.background="#faa61a";
+    }
+    else if(status==="dnd"){
+        text.textContent="DISCORD - DND";
+        dot.style.background="#f04747";
+    }
+    else{
+        text.textContent="DISCORD - OFFLINE";
+        dot.style.background="#747f8d";
+    }
+}
+
+getDiscordStatus();
+setInterval(getDiscordStatus,15000);
 </script>
 
 </body>
