@@ -1,265 +1,172 @@
-<!DOCTYPE html>
-<html lang="hu">
+<!doctype html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>sxwss.gg</title>
-<link rel="icon" href="data:,">
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#08090b">
+<meta name="description" content="SXWSS · TikTok, Instagram and Discord.">
+<title>SXWSS</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif;}
-body{overflow:hidden;background:black;}
-
-/* VIDEO */
-video{
-    position:fixed;
-    top:50%;left:50%;
-    min-width:100%;min-height:100%;
-    transform:translate(-50%,-50%);
-    object-fit:cover;
-    filter:grayscale(100%) brightness(0.35) contrast(1.1);
-    z-index:-3;
-}
-
-/* MOBILE IMAGE */
-.mobile-bg{
-    display:none;
-    position:fixed;
-    width:100%;height:100%;
-    background:url("background.jpg") center center / cover no-repeat;
-    filter:grayscale(100%) brightness(0.35) contrast(1.1);
-    z-index:-3;
-}
-
-.dark{
-    position:fixed;
-    width:100%;height:100%;
-    background:rgba(0,0,0,0.55);
-    z-index:-2;
-}
-
-/* CLOCK */
-.clock{
-    position:fixed;
-    top:18px;right:28px;
-    font-size:13px;
-    letter-spacing:3px;
-    color:rgba(255,255,255,0.55);
-}
-
-/* DISCORD */
-.discordStatus{
-    position:fixed;
-    bottom:48px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:12px;
-    letter-spacing:4px;
-    color:rgba(255,255,255,0.75);
-    display:flex;
-    align-items:center;
-    gap:8px;
-}
-
-.dot{
-    width:8px;height:8px;
-    border-radius:50%;
-    background:gray;
-    box-shadow:0 0 8px gray;
-}
-
-@keyframes pulse{
-    0%{box-shadow:0 0 4px currentColor;}
-    50%{box-shadow:0 0 16px currentColor;}
-    100%{box-shadow:0 0 4px currentColor;}
-}
-
-/* CENTER */
-.center{
-    position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-}
-
-.enter{
-    padding:24px 90px;
-    font-size:36px;
-    letter-spacing:10px;
-    color:white;
-    background:rgba(255,255,255,0.04);
-    border:1px solid rgba(255,255,255,0.25);
-    backdrop-filter:blur(14px);
-    cursor:pointer;
-    transition:0.35s ease;
-}
-
-.enter:hover{transform:scale(1.06);}
-
-/* MENU */
-.menuOverlay{
-    position:fixed;
-    width:100%;height:100%;
-    background:rgba(0,0,0,0.75);
-    backdrop-filter:blur(50px);
-    opacity:0;
-    pointer-events:none;
-    transition:opacity 0.5s ease;
-}
-
-.menuOverlay.active{
-    opacity:1;
-    pointer-events:all;
-}
-
-.menu{
-    position:absolute;
-    top:50%;left:50%;
-    transform:translate(-50%,-50%);
-    text-align:center;
-}
-
-.menu a{
-    display:block;
-    font-size:42px;
-    margin:30px 0;
-    color:white;
-    text-decoration:none;
-    letter-spacing:10px;
-    transition:0.3s ease;
-}
-
-.menu a:hover{transform:scale(1.12);}
-
-/* FOOTER */
-.footer{
-    position:fixed;
-    bottom:16px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:13px;
-    letter-spacing:4px;
-    color:rgba(255,255,255,0.35);
-}
-
-@media (max-width:768px){
-    video{display:none;}
-    .mobile-bg{display:block;}
-}
+* { box-sizing: border-box }
+:root { color-scheme: dark; font-family: Inter, "Segoe UI", Arial, sans-serif; background: #08090b; color: #f6f6f2 }
+body { margin: 0; min-height: 100vh; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(20px,4vw,60px); position: relative; isolation: isolate }
+.scene, .shade { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -2; object-fit: cover; object-position: 58% center; pointer-events: none }
+.shade { z-index: -1; background: linear-gradient(180deg,rgba(4,6,9,.61),rgba(4,6,9,.52) 40%,rgba(4,6,9,.56) 68%,rgba(4,6,9,.72)) }
+header, footer, .brand, .clock, .presence, .controls, button, nav, a { display: flex; align-items: center }
+header, footer { justify-content: space-between; gap: 12px }
+header, footer { font-family: "Courier New", monospace; font-size: 12px; letter-spacing: .065em }
+.brand, .clock, .presence, button { gap: 9px }
+.brand { gap: 6px; font: italic 900 23px/1 "Arial Black",Arial,sans-serif; letter-spacing: -.075em }
+.brand small { font: 600 12px/1 "Courier New",monospace; letter-spacing: -.04em; color: #c7cbd0; margin-left: 2px }
+.orbit { display: block; width: 41px; height: 34px; flex: none }
+.clock { gap: 7px; font: italic 900 clamp(19px,2vw,27px)/1 "Arial Black",Arial,sans-serif; letter-spacing: -.065em; font-variant-numeric: tabular-nums }
+.clock svg { width: 23px; height: 23px; overflow: visible }
+.clock circle { fill: none; stroke: currentColor; stroke-width: 2.4 }
+.clock-track { opacity: .25 }
+#minuteArc { transform: rotate(-90deg); transform-origin: center; stroke-linecap: round }
+#seconds { font-size: .54em; letter-spacing: -.03em; color: #c9cacf; align-self: flex-start; margin-top: 2px }
+main { align-self: center; justify-self: center; text-align: center; padding: 38px 0 }
+h1 { margin: 0; font: italic 900 clamp(76px,13vw,206px)/.9 "Arial Black",Arial,sans-serif; letter-spacing: -.095em; padding-right: .11em; text-shadow: 0 2px 28px #07080a66 }
+nav { margin-top: clamp(24px,3vw,42px); justify-content: center; flex-wrap: wrap; gap: 4px clamp(12px,2.8vw,42px) }
+nav a { color: #f2f2ee; font: italic 900 clamp(16px,1.8vw,26px)/1 "Arial Black",Arial,sans-serif; letter-spacing: -.06em; text-decoration: none; gap: 5px; min-height: 44px; text-shadow: 0 1px 8px #000; transition: transform .22s ease }
+.arrow { width: .94em; height: .94em; overflow: hidden; fill: currentColor }
+.arrow use { transition: transform .27s cubic-bezier(.2,.75,.2,1) }
+.arrow .incoming { transform: translate(-100%,100%) }
+nav a:is(:hover,:focus-visible) { transform: translateY(-2px) }
+nav a:is(:hover,:focus-visible) .outgoing { transform: translate(100%,-100%) }
+nav a:is(:hover,:focus-visible) .incoming { transform: translate(0,0) }
+@media(prefers-reduced-motion:reduce) { nav a, .arrow use { transition: none } nav a:is(:hover,:focus-visible) { transform: none } }
+footer { gap: 8px; flex-wrap: wrap; color: #f5f5f2; font: italic 900 16px/1 "Arial Black",Arial,sans-serif; letter-spacing: -.055em }
+.presence, .controls { background: rgba(12,13,16,.78); border: 1px solid #ffffff35; border-radius: 24px; backdrop-filter: blur(10px) }
+.presence { padding: 10px 15px; gap: 8px; flex-wrap: wrap }
+#presence { color: #d2d3d6; font: italic 700 13px/1.1 Arial,sans-serif; letter-spacing: -.015em }
+#presence:empty { display: none }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: #9a9b9e; box-shadow: 0 0 0 3px #ffffff10; flex: none }
+.controls { gap: 0; margin-left: auto }
+button { font: inherit; letter-spacing: inherit; color: inherit; border: 0; background: transparent; border-radius: 24px; min-width: 44px; min-height: 44px; padding: 0 13px; justify-content: center; cursor: pointer }
+button:is(:hover,:focus-visible) { background: #ffffff18 }
+:focus-visible { outline: 2px solid white; outline-offset: 4px }
+.bars { display: inline-flex; gap: 2px; height: 14px; align-items: center; transform: skewX(-12deg) }
+.bars i { width: 3px; height: 40%; background: currentColor }
+.bars i:nth-child(2) { height: 100% }
+.bars i:nth-child(3) { height: 70% }
+#sound[aria-pressed="false"] .bars i { height: 3px }
+#motion svg { width: 15px; height: 15px; fill: currentColor; transform: skewX(-10deg) }
+#motion .pause, #motion.playing .play { display: none }
+#motion.playing .pause { display: block }
+@media(max-width:580px) { body { padding: 24px 19px 14px } .scene { object-position: 60% center } footer { font-size: 14px } .presence { padding: 9px 11px; gap: 6px } #presence { font-size: 12px } }
 </style>
 </head>
 <body>
-
-<video autoplay muted loop playsinline preload="none">
-    <source src="background.mp4" type="video/mp4">
-</video>
-
-<div class="mobile-bg"></div>
-<div class="dark"></div>
-
-<div class="clock" id="clock">00:00</div>
-
-<div class="center">
-    <button class="enter" onclick="openMenu()">SXWSS</button>
+<video class="scene" id="film" poster="background.jpg" muted loop playsinline preload="none"></video>
+<div class="shade"></div>
+<header>
+  <div class="brand">
+    <svg class="orbit" viewBox="0 0 48 40" aria-hidden="true">
+      <defs>
+        <linearGradient id="planet" x1="0" y1="0" x2=".85" y2="1" gradientUnits="objectBoundingBox">
+          <stop stop-color="#ffffff"/><stop offset=".42" stop-color="#cbd0d7"/>
+          <stop offset=".7" stop-color="#525760"/><stop offset="1" stop-color="#13151a"/>
+        </linearGradient>
+      </defs>
+      <g transform="rotate(-32 23 21)">
+        <ellipse cx="23" cy="21" rx="23" ry="5" fill="none" stroke="#b9bec6" stroke-width="1.4"/>
+        <circle cx="23" cy="21" r="12" fill="url(#planet)" stroke="#dedfe2" stroke-width=".8"/>
+        <path d="M1 21c0 7 44 7 44 0" fill="none" stroke="#202228" stroke-width="3.8"/>
+        <path d="M1 21c0 6 44 6 44 0" fill="none" stroke="#fff" stroke-width="1.8"/>
+      </g>
+      <path d="m39 1 1.1 3.6L44 6l-3.9 1.1L39 11l-1.2-3.9L34 6l3.8-1.4Z" fill="#fff"/>
+    </svg>
+    <span>sxwss<small>.hu</small></span>
+  </div>
+  <time class="clock" id="clock">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle class="clock-track" cx="12" cy="12" r="9"/><circle id="minuteArc" cx="12" cy="12" r="9" pathLength="60" stroke-dasharray="60" /></svg>
+    <span id="hours"></span><span id="seconds"></span>
+  </time>
+</header>
+<main>
+<h1>SXWSS</h1>
+<svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><path id="launchArrow" d="M3 3h18l-4 16h-5l2-8-11 11-3-4L12 7H2z"/></defs></svg>
+<nav aria-label="Social profiles">
+<a href="https://www.tiktok.com/@sxwss_" target="_blank" rel="noopener noreferrer">TikTok <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
+<a href="https://www.instagram.com/brenooo1_/" target="_blank" rel="noopener noreferrer">Instagram <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
+<a href="https://discord.com/users/1094196936233472066" target="_blank" rel="noopener noreferrer">Discord <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
+</nav>
+</main>
+<footer>
+<div class="presence"><span class="dot" id="dot"></span><span>Discord</span><span id="presence"></span></div>
+<div class="controls">
+<button type="button" id="sound" aria-label="Sound for EsDeeKid – Century" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundText">Sound on</span></button>
+<button type="button" id="motion" aria-label="Play music video" title="Play music video"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="play" d="M3 1l12 7-12 7z"/><path class="pause" d="M2 1h4v14H2zM10 1h4v14h-4z"/></svg></button>
 </div>
-
-<div class="menuOverlay" id="menuOverlay">
-    <div class="menu">
-        <a href="https://www.tiktok.com/@sxwss_" target="_blank">TIKTOK</a>
-        <a href="https://www.instagram.com/brenooo1_/" target="_blank">INSTAGRAM</a>
-        <a href="https://discord.com/users/1094196936233472066" target="_blank">DISCORD</a>
-    </div>
-</div>
-
-<div class="discordStatus">
-    <span class="dot" id="statusDot"></span>
-    <span id="statusText">DISCORD - LOADING</span>
-</div>
-
-<div class="footer">
-    made with ♡ by sxwss
-</div>
-
-<!-- BACKGROUND MUSIC -->
-<audio id="bgMusic" loop preload="auto">
-    <source src="background.mp3" type="audio/mpeg">
-</audio>
-
+</footer>
 <script>
-const overlay=document.getElementById("menuOverlay");
-const clock=document.getElementById("clock");
-const music=document.getElementById("bgMusic");
-
-/* CLOCK */
-function updateClock(){
-    const now=new Date();
-    clock.textContent=
-        now.getHours().toString().padStart(2,'0')+":"+
-        now.getMinutes().toString().padStart(2,'0');
+const el = id => document.getElementById(id);
+const clockFormat = new Intl.DateTimeFormat('en-GB',{hour:'2-digit',minute:'2-digit'});
+function tick() {
+  const now = new Date();
+  const hours = clockFormat.format(now);
+  const seconds = String(now.getSeconds()).padStart(2,'0');
+  const time = hours + ':' + seconds;
+  el('clock').dateTime = time;
+  el('clock').setAttribute('aria-label', 'Local time ' + time);
+  el('hours').textContent = hours;
+  el('seconds').textContent = seconds;
+  el('minuteArc').setAttribute('stroke-dashoffset', 60 - now.getSeconds());
 }
-setInterval(updateClock,1000);
-updateClock();
-
-/* MENU */
-function openMenu(){
-    overlay.classList.add("active");
+tick();
+setInterval(tick,1000);
+const film = el('film');
+film.volume = .45;
+function startFilm() {
+  if (!film.hasAttribute('src')) film.src = 'background.mp4';
+  film.play().catch(() => {});
 }
-document.addEventListener("keydown",(e)=>{
-    if(e.key==="Escape"){
-        overlay.classList.remove("active");
-    }
-});
-
-/* 🔥 MUSIC SYSTEM */
-function tryAutoPlay(){
-    music.volume=1;
-    music.play().catch(()=>{});
+function showMotion() {
+  const label = film.paused ? 'Play music video' : 'Pause music video';
+  el('motion').classList.toggle('playing', !film.paused);
+  el('motion').title = label;
+  el('motion').setAttribute('aria-label',label);
 }
-
-window.addEventListener("load", tryAutoPlay);
-
-// HA BLOKKOLJA → BÁRHOL KATTINTASZ ELINDUL
-function forcePlay(){
-    music.play();
-    document.removeEventListener("click", forcePlay);
-    document.removeEventListener("touchstart", forcePlay);
+film.addEventListener('play',showMotion);
+film.addEventListener('pause',showMotion);
+el('motion').onclick = () => film.paused ? startFilm() : film.pause();
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
+if (!reduceMotion.matches) startFilm();
+reduceMotion.addEventListener('change',event => { if (event.matches) film.pause(); });
+function showSound() {
+  el('soundText').textContent = film.muted ? 'Sound on' : 'Mute';
+  el('sound').setAttribute('aria-pressed', String(!film.muted));
 }
-
-document.addEventListener("click", forcePlay);
-document.addEventListener("touchstart", forcePlay);
-
-/* DISCORD */
-async function getDiscordStatus(){
-    const res=await fetch("https://api.lanyard.rest/v1/users/1094196936233472066");
-    const data=await res.json();
-
-    const status=data.data.discord_status;
-    const text=document.getElementById("statusText");
-    const dot=document.getElementById("statusDot");
-
-    dot.style.animation="none";
-
-    if(status==="online"){
-        text.textContent="DISCORD - ONLINE";
-        dot.style.background="#43b581";
-        dot.style.animation="pulse 2s infinite";
+film.addEventListener('volumechange', showSound);
+el('sound').onclick = async () => {
+  film.muted = !film.muted;
+  if (!film.muted && film.paused) {
+    if (!film.hasAttribute('src')) film.src = 'background.mp4';
+    try {
+      await film.play();
+    } catch {
+      film.muted = true;
+      showSound();
     }
-    else if(status==="idle"){
-        text.textContent="DISCORD - IDLE";
-        dot.style.background="#faa61a";
-    }
-    else if(status==="dnd"){
-        text.textContent="DISCORD - DND";
-        dot.style.background="#f04747";
-    }
-    else{
-        text.textContent="DISCORD - OFFLINE";
-        dot.style.background="#747f8d";
-    }
+  }
+};
+const states = { online:['Online','#8ed8a0'],idle:['Idle','#ddb469'],dnd:['Do not disturb','#e48a8a'],offline:['Offline','#999'] };
+async function presence() {
+  try {
+    const res = await fetch('https://api.lanyard.rest/v1/users/1094196936233472066',{signal:AbortSignal.timeout(7000)});
+    if (!res.ok) throw Error();
+    const {data} = await res.json();
+    const [label,color] = states[data.discord_status];
+    el('presence').textContent = label;
+    el('dot').style.background = color;
+  } catch {
+    el('presence').textContent = '';
+    el('dot').style.background = '';
+  }
 }
-
-getDiscordStatus();
-setInterval(getDiscordStatus,15000);
+presence();
+setInterval(presence,30000);
 </script>
-
 </body>
 </html>
