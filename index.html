@@ -55,13 +55,8 @@ button:is(:hover,:focus-visible) { background: #ffffff18 }
 #motion svg { width: 15px; height: 15px; fill: currentColor; transform: skewX(-10deg) }
 #motion .pause, #motion.playing .play { display: none }
 #motion.playing .pause { display: block }
-@media (min-width: 900px) and (hover: hover) {
-  #discordProfile { position: relative }
-  #discordProfile .presence { position: absolute; left: 0; top: 100%; gap: 5px; white-space: nowrap }
-  #discordProfile .presence > .service-name { display: none }
-  #discordProfile .presence:has(#presence:empty) { display: none }
-  #discordProfile #presence { font: 500 12px/1.2 Arial,sans-serif; color: #dadadd }
-}
+.presence { display: none }
+@media (max-width: 932px) and (pointer: coarse) and (hover: none) { .presence { display: flex } }
 @media(max-width:580px) { body { padding: 24px 19px 14px } .scene { object-position: 60% center } footer { font-size: 14px } }
 </style>
 </head>
@@ -84,11 +79,11 @@ button:is(:hover,:focus-visible) { background: #ffffff18 }
 <nav aria-label="Social profiles">
 <a href="https://www.tiktok.com/@sxwss_" target="_blank" rel="noopener noreferrer">TikTok <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
 <a href="https://www.instagram.com/brenooo1_/" target="_blank" rel="noopener noreferrer">Instagram <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
-<a id="discordProfile" href="https://discord.com/users/1094196936233472066" target="_blank" rel="noopener noreferrer">Discord <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
+<a href="https://discord.com/users/1094196936233472066" target="_blank" rel="noopener noreferrer">Discord <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
 </nav>
 </main>
 <footer>
-<span class="presence"><span class="dot" id="dot"></span><span class="service-name">Discord</span><span id="presence"></span></span>
+<span class="presence"><span class="dot" id="dot"></span><span>Discord</span><span id="presence"></span></span>
 <div class="controls">
 <button type="button" id="sound" aria-label="Sound for EsDeeKid – Century" aria-pressed="false"><span class="bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span id="soundText">Sound on</span></button>
 <button type="button" id="motion" aria-label="Play music video" title="Play music video"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="play" d="M3 1l12 7-12 7z"/><path class="pause" d="M2 1h4v14H2zM10 1h4v14h-4z"/></svg></button>
@@ -157,16 +152,10 @@ el('sound').onclick = async () => {
     }
   }
 };
-const desktopLayout = matchMedia('(min-width: 900px) and (hover: hover)');
-const statusBadge = document.querySelector('.presence');
-function placeStatus() {
-  if (desktopLayout.matches) el('discordProfile').append(statusBadge);
-  else document.querySelector('footer').prepend(statusBadge);
-}
-placeStatus();
-desktopLayout.addEventListener('change', placeStatus);
+const phoneLayout = matchMedia('(max-width: 932px) and (pointer: coarse) and (hover: none)');
 const states = { online:['Online','#8ed8a0'],idle:['Idle','#ddb469'],dnd:['Do not disturb','#e48a8a'],offline:['Offline','#999'] };
 async function presence() {
+  if (!phoneLayout.matches) return;
   try {
     const res = await fetch('https://api.lanyard.rest/v1/users/1094196936233472066',{signal:AbortSignal.timeout(7000)});
     if (!res.ok) throw Error();
@@ -179,6 +168,7 @@ async function presence() {
     el('dot').style.background = '';
   }
 }
+phoneLayout.addEventListener('change', presence);
 presence();
 setInterval(presence,30000);
 </script>
