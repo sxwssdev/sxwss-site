@@ -58,6 +58,9 @@ button:is(:hover,:focus-visible) { background: #ffffff18 }
 .presence { display: none }
 @media (max-width: 932px) and (pointer: coarse) and (hover: none) { .presence { display: flex } }
 @media(max-width:580px) { body { padding: 24px 19px 14px } .scene { object-position: 60% center } footer { font-size: 14px } }
+h1 {padding:0;line-height:0;text-shadow:none} h1 svg {width:min(57vw,770px);height:auto;overflow:visible} nav {margin-top:0}
+.drip {animation:ooze 4.5s ease-in-out infinite alternate; transform-origin:0 0} @keyframes ooze {from { transform:scaleY(.62)} to { transform:scaleY(1.12)}}
+@media(max-width:580px){h1 svg{width:86vw}} @media(prefers-reduced-motion:reduce){.drip{animation:none}}
 </style>
 </head>
 <body>
@@ -74,7 +77,81 @@ button:is(:hover,:focus-visible) { background: #ffffff18 }
   </time>
 </header>
 <main>
-<h1>SXWSS</h1>
+<h1>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 690 190" role="img" aria-label="SXWSS">
+    <defs>
+      <linearGradient id="chrome" x2=".14" y2="1" gradientUnits="objectBoundingBox">
+        <stop stop-color="#afb9c8"/>
+        <stop offset=".16" stop-color="#fbfdff"/>
+        <stop offset=".33" stop-color="#e6eaef"/>
+        <stop offset=".45" stop-color="#a4adba"/>
+        <stop offset=".52" stop-color="#77818f"/>
+        <stop offset=".545" stop-color="#d3dbe1"/>
+        <stop offset=".56" stop-color="#454d57"/>
+        <stop offset=".61" stop-color="#66707a"/>
+        <stop offset=".79" stop-color="#f6f8fb"/>
+        <stop offset=".91" stop-color="#aeb7c5"/>
+        <stop offset="1" stop-color="#596573"/>
+      </linearGradient>
+      <linearGradient id="drop">
+        <stop stop-color="#53606c"/>
+        <stop offset=".32" stop-color="#8b97a3"/>
+        <stop offset=".51" stop-color="white"/>
+        <stop offset=".69" stop-color="#b4bec8"/>
+        <stop offset="1" stop-color="#3a424b"/>
+      </linearGradient>
+    </defs>
+    <g transform="translate(55 116) scale(1.0 0.85)">
+      <g class="drip" style="animation-delay:-1.4s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(77 117) scale(0.4 0.35)">
+      <g class="drip" style="animation-delay:-0.2s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(176 115) scale(0.6 0.55)">
+      <g class="drip" style="animation-delay:-2s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(294 117) scale(0.9 1.025)">
+      <g class="drip" style="animation-delay:-1s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(406 113) scale(0.5 0.425)">
+      <g class="drip" style="animation-delay:-0.9s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(504 115) scale(0.7 0.675)">
+      <g class="drip" style="animation-delay:-1.7s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(596 116) scale(1.0 0.975)">
+      <g class="drip" style="animation-delay:-2.4s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <g transform="translate(615 116) scale(0.4 0.3)">
+      <g class="drip" style="animation-delay:-1.8s">
+        <path fill="url(#drop)" d="M-13 -9H13C11 0 4 4 3 12S1 24 3.9 31Q6.8 40 0 40Q-6 40 -4 32C-1 24 -2 17 -3 12Q-4 4 -13 0Z"/>
+        <ellipse cx="-1" cy="35" rx="1.3" ry="2.3" fill="white"/>
+      </g>
+    </g>
+    <text x="11" y="124" font-family="Arial Black, Arial, sans-serif" font-size="156" font-style="italic" font-weight="900" letter-spacing="-12" textLength="653" lengthAdjust="spacingAndGlyphs" fill="url(#chrome)" stroke="#d2d8dd" stroke-width="1" paint-order="stroke">SXWSS</text>
+  </svg>
+</h1>
 <svg width="0" height="0" aria-hidden="true" style="position:absolute"><defs><path id="launchArrow" d="M3 3h18l-4 16h-5l2-8-11 11-3-4L12 7H2z"/></defs></svg>
 <nav aria-label="Social profiles">
 <a href="https://www.tiktok.com/@sxwss_" target="_blank" rel="noopener noreferrer">TikTok <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><use class="outgoing" href="#launchArrow"/><use class="incoming" href="#launchArrow"/></svg></a>
