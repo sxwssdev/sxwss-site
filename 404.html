@@ -58,9 +58,29 @@
   <main>
     <div class="code" aria-hidden="true">4<img src="/planet.svg" alt="">4</div>
     <h1 aria-label="404 — Lost in orbit">Lost in orbit</h1>
-    <a href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path transform="translate(24 0) scale(-1 1)" d="M3 3h18l-4 16h-5l2-8-11 11-3-4L12 7H2z"/></svg>Back home</a>
+    <a id="back-home" href="/"><svg viewBox="0 0 24 24" aria-hidden="true"><path transform="translate(24 0) scale(-1 1)" d="M3 3h18l-4 16h-5l2-8-11 11-3-4L12 7H2z"/></svg>Back home</a>
   </main>
   <script>
+    const homeLink = document.getElementById('back-home');
+    const clip = new Audio('/back-home.mp3');
+    clip.preload = 'auto';
+    homeLink.addEventListener('click', event => {
+      if (event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+      event.preventDefault();
+      if (homeLink.hasAttribute('aria-busy')) return;
+      homeLink.setAttribute('aria-busy', 'true');
+      const goHome = () => {
+        if (!homeLink.hasAttribute('aria-busy')) return;
+        clearTimeout(timeout);
+        homeLink.removeAttribute('aria-busy');
+        location.assign(homeLink.href);
+      };
+      const timeout = setTimeout(goHome, 8000);
+      clip.onended = goHome;
+      clip.onerror = goHome;
+      clip.play().catch(goHome);
+    });
+
     const canvas = document.getElementById('space');
     const ctx = canvas.getContext('2d');
     const reduced = matchMedia('(prefers-reduced-motion: reduce)');
